@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 $LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'helper')  # general helpers
-$LOAD_PATH << File.join(File.dirname(__FILE__), 'helper')  	     # bin-specific helpers
+$LOAD_PATH << File.join(File.dirname(__FILE__), 'helper')        # bin-specific helpers
 
 require "rubygems"
 require "nokogiri"

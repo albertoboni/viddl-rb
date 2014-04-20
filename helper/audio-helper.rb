@@ -4,10 +4,10 @@ module ViddlRb
   # This class is responsible for extracting audio from video files using ffmpeg.
   class AudioHelper
 
-    def self.extract(file_name, save_dir)
+    def self.extract(file_name, video_dir, save_dir)
       # capture stderr because ffmpeg expects an output param and will error out
       puts "Gathering information about the downloaded file."
-      escaped_input_file_path = UtilityHelper.make_shellsafe_path(File.join(save_dir, file_name))
+      escaped_input_file_path = UtilityHelper.make_shellsafe_path(File.join(video_dir, file_name))
       file_info = Open3.popen3("ffmpeg -i #{escaped_input_file_path}") {|stdin, stdout, stderr, wait_thr| stderr.read }
       puts "Done gathering information about the downloaded file."
 

@@ -27,8 +27,10 @@ class ParameterParser
       :title_only       => false,
       :playlist_filter  => nil,
       :save_dir         => DEFAULT_SAVE_DIR,
+      :save_audio_dir   => DEFAULT_SAVE_DIR,
       :tool             => nil,
-      :quality          => nil
+      :quality          => nil,
+      :name             => nil,
     }
 
     optparse = OptionParser.new do |opts|
@@ -65,8 +67,25 @@ class ParameterParser
       opts.on("-s", "--save-dir DIRECTORY", "Specifies the directory where videos should be saved") do |dir|
         if File.directory?(dir)
           options[:save_dir] = dir
+          options[:save_audio_dir] = dir
         else
           raise OptionParser::InvalidArgument.new("'#{dir}' is not a valid directory")
+        end
+      end
+
+      opts.on("-u", "--save-audio-dir DIRECTORY", "Specifies the directory where audio files extracts to") do |dir|
+        if File.directory?(dir)
+          options[:save_audio_dir] = dir
+        else
+          raise OptionParser::InvalidArgument.new("'#{dir}' is not a valid directory")
+        end
+      end
+
+      opts.on("-n", "--name FILENAME", "Specifies the name of the file to be saved") do |name|
+        if name != nil
+          options[:name] = name
+        else
+          raise OptionParser::InvalidArgument.new("A filename cannot be blank")
         end
       end
 

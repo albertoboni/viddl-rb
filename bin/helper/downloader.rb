@@ -10,6 +10,12 @@ class Downloader
       # Url
       url = url_name[:url]
       name = url_name[:name]
+      extension = /\..*\z/.match(name)
+
+      # override the file name if passed, but keep the extension
+      if params[:name] != nil
+        name = params[:name] + extension.to_s
+      end
 
       result = ViddlRb::DownloadHelper.save_file url,
                                                  name,
@@ -18,7 +24,7 @@ class Downloader
       if result
         puts "Download for #{name} successful."
         url_name[:on_downloaded].call(true) if url_name[:on_downloaded]
-        ViddlRb::AudioHelper.extract(name, params[:save_dir]) if params[:extract_audio]
+        ViddlRb::AudioHelper.extract(name, params[:save_dir], params[:save_audio_dir]) if params[:extract_audio]
       else
         url_name[:on_downloaded].call(false) if url_name[:on_downloaded]
         if params[:abort_on_failure]
