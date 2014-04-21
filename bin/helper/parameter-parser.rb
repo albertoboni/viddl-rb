@@ -31,6 +31,7 @@ class ParameterParser
       :tool             => nil,
       :quality          => nil,
       :name             => nil,
+      :audio_format     => nil,
     }
 
     optparse = OptionParser.new do |opts|
@@ -81,9 +82,14 @@ class ParameterParser
         end
       end
 
-      opts.on("-n", "--name FILENAME", "Specifies the name of the file to be saved") do |name|
+      opts.on("-n", "--name FILENAME", "Specifies the name and extension of the file to be saved") do |name|
         if name != nil
           options[:name] = name
+          match = /\.(m4a|mp3|ogg)\z/.match(name)
+          if match
+            options[:name].gsub!(/\.(m4a|mp3|ogg)\z/, '')
+            options[:audio_format] = match[1]
+          end
         else
           raise OptionParser::InvalidArgument.new("A filename cannot be blank")
         end

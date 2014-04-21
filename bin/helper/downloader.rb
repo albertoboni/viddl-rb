@@ -24,7 +24,7 @@ class Downloader
       if result
         puts "Download for #{name} successful."
         url_name[:on_downloaded].call(true) if url_name[:on_downloaded]
-        ViddlRb::AudioHelper.extract(name, params[:save_dir], params[:save_audio_dir]) if params[:extract_audio]
+        ViddlRb::AudioHelper.extract(name, params[:save_dir], params[:save_audio_dir], params[:audio_format]) if params[:extract_audio]
       else
         url_name[:on_downloaded].call(false) if url_name[:on_downloaded]
         if params[:abort_on_failure]
