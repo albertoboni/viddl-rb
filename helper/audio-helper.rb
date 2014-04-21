@@ -4,7 +4,7 @@ module ViddlRb
   # This class is responsible for extracting audio from video files using ffmpeg.
   class AudioHelper
 
-    def self.extract(file_name, video_dir, save_dir, audio_format)
+    def self.extract(file_name, video_dir, save_dir, audio_format, metadata)
       # capture stderr because ffmpeg expects an output param and will error out
       puts "Gathering information about the downloaded file."
       
@@ -57,13 +57,17 @@ module ViddlRb
 
         #options for converting to a different format
         if copy_audio_encoding
-          command_options = " -vn -acodec copy "
+          command_options = "-vn -acodec copy"
         else
-          command_options = " -b:a 192K -vn "
+          command_options = "-b:a 192K -vn"
+        end
+
+        if metadata != nil && metadata[:title] && metadata[:artist]
+          metadata = "-metadata title=\"#{metadata[:title]}\" -metadata artist=\"#{metadata[:artist]}\""
         end
 
 
-        command = "ffmpeg -i #{escaped_input_file_path} #{command_options} #{escaped_output_file_path}"
+        command = "ffmpeg -i #{escaped_input_file_path} #{metadata} #{command_options} #{escaped_output_file_path}"
         Open3.popen3(command) { |stdin, stdout, stderr, wait_thr| stdout.read }
         
         
