@@ -65,9 +65,7 @@ module ViddlRb
 
         command = "ffmpeg -i #{escaped_input_file_path} #{command_options} #{escaped_output_file_path}"
         Open3.popen3(command) { |stdin, stdout, stderr, wait_thr| stdout.read }
-
-        puts command
-
+        
         
         puts "Done extracting audio to #{output_file_path}"
       else

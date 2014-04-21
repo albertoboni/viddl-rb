@@ -85,13 +85,16 @@ class ParameterParser
       opts.on("-n", "--name FILENAME", "Specifies the name and extension of the file to be saved") do |name|
         if name != nil
           options[:name] = name
-          match = /\.(m4a|mp3|ogg)\z/.match(name)
-          if match
-            options[:name].gsub!(/\.(m4a|mp3|ogg)\z/, '')
-            options[:audio_format] = match[1]
-          end
         else
           raise OptionParser::InvalidArgument.new("A filename cannot be blank")
+        end
+      end
+
+      opts.on("-i", "--audio-format FORMAT", "Specifies the file format to be exported to") do |audio_format|
+        if ['mp3', 'm4a', 'ogg'].include?(audio_format.to_s.downcase)
+          options[:audio_format] = audio_format.downcase
+        else
+          raise OptionParser::InvalidArgument.new("Only m4a, mp3 and ogg formats are supported")
         end
       end
 
